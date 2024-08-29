@@ -19,10 +19,16 @@ app.MapGet("/podcasts", async (IOptions<Settings> settings) =>
 
     return (await db.QueryAsync<Podcast>("SELECT * FROM Podcasts")).Select(x => x.Title);
 });
+app.MapGet("/podcastsFull", async (IOptions<Settings> settings) =>
+{
+    var db = new SqlConnection(settings.Value.ConnectionString);
+
+    return (await db.QueryAsync<Podcast>("SELECT * FROM Podcasts"));
+});
 
 app.Run();
 
-record Podcast(Guid Id, string Title);
+public record Podcast(Guid Id, string Title);
 
 public partial class Program
 {
