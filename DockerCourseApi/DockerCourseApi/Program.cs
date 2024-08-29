@@ -18,19 +18,6 @@ app.MapGet("/podcasts", async (IOptions<Settings> settings) =>
     var db = new SqlConnection(settings.Value.ConnectionString);
 
     return (await db.QueryAsync<Podcast>("SELECT * FROM Podcasts")).Select(x => x.Title);
-
-    // return new List<string>
-    // {
-    //     "Unhandled Exception Podcast",
-    //     "Developer Weekly Podcast",
-    //     "The Stack Overflow Podcast",
-    //     "The Hanselminutes Podcast",
-    //     "The .NET Rocks Podcast",
-    //     "The Azure Podcast",
-    //     "The AWS Podcast",
-    //     "The Rabbit Hole Podcast",
-    //     "The .NET Core Podcast",
-    // };
 });
 
 app.Run();
