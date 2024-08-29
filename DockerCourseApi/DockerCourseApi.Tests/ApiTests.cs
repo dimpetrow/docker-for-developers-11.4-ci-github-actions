@@ -9,7 +9,7 @@ public class ApiTests
     public async Task GivenGetRequestToPodcastsEndpoint_ShouldReturnOkay()
     {
         var httpClient = new CustomWebApplicationFactory().CreateClient();
-        var response = await httpClient.GetAsync("/podcastsssss");
+        var response = await httpClient.GetAsync("/podcasts");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }
