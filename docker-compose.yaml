@@ -1,5 +1,4 @@
 services:
-
   frontend:
     build:
       context: ./DockerCourseFrontend/DockerCourseFrontend/.
@@ -23,11 +22,13 @@ services:
     environment:
       - ACCEPT_EULA=true
       - MSSQL_SA_PASSWORD=Dometrain#123
-    ports:
-      - 1433:1433
+    # ports:
+    #   - 1433:1433
+    # volumes:
+    #   -DockerCourseVolume:/:ro
 
   database-seed:
-    depends_on: [ database ]
+    depends_on: [database]
     build:
       context: Database/
       dockerfile: Dockerfile
