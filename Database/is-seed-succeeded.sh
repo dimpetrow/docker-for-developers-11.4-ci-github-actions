@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Waiting for SQL Server to be ready..."
+echo "Checking if seed script succeeded..."
 
 for i in {1..50};
 do

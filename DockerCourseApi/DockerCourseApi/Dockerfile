@@ -1,11 +1,14 @@
 ﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["DockerCourseApi/DockerCourseApi.csproj", "DockerCourseApi/"]
+COPY ["DockerCourseApi/DockerCourseApi/DockerCourseApi.csproj", "DockerCourseApi/"]
 RUN dotnet restore "DockerCourseApi/DockerCourseApi.csproj"
-COPY . .
+COPY "docker-compose.yaml" .
+COPY "docker-compose.integration-test.override.yaml" .
+COPY "DockerCourseApi/" .
 WORKDIR "/src"
 RUN dotnet build "DockerCourseApi/DockerCourseApi.csproj" -c Release -o /app/build
-RUN dotnet test "DockerCourseApi.Tests/DockerCourseApi.Tests.csproj"
+ARG DOCKERCOURSEAPI_DATABASE_INTEGRATION_TEST_PORT=1434
+RUN dotnet test "DockerCourseApi.Tests/DockerCourseApi.Tests.csproj" -e "DOCKERCOURSEAPI_DATABASE_INTEGRATION_TEST_PORT=${DOCKERCOURSEAPI_DATABASE_INTEGRATION_TEST_PORT}"
 RUN dotnet publish "DockerCourseApi/DockerCourseApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0

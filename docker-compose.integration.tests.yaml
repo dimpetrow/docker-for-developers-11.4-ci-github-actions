@@ -1,0 +1,14 @@
+# Meant to extend 'docker-compose.integration-test.infrastructure.yaml'
+
+services:
+  integration-tests:
+    build:
+      context: ./DockerCourseApi/.
+      dockerfile: DockerCourseApi.Tests/Dockerfile
+    image: dometraindockercourse/integration-tests
+    container_name: integration-tests
+    environment:
+      - DOCKERCOURSEAPI_DATABASE_INTEGRATION_TEST_DB=${DATABASE_DNS_ENTRY:-database-integration-test}
+    depends_on:
+      database-seed:
+        condition: service_completed_successfully

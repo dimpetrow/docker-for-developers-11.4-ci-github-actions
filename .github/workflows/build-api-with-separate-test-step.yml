@@ -22,22 +22,16 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Spin up database
-        run: docker compose up -d database
-
-      - name: Seed database
+      - name: Test
         run: |
           chmod +x ./Database/wait-and-run.sh
-          docker compose run --build database-seed
-
-      - name: Build
-        run: |
-          docker build \
-            -t ${{ vars.DOCKER_USERNAME }}/api:latest \
-            -t ${{ vars.DOCKER_USERNAME }}/api:${{github.run_number}} \
-            -f ./DockerCourseApi/DockerCourseApi/Dockerfile \
-            --network host \
-            ./DockerCourseApi/.
+          docker compose \
+            -f docker-compose.yaml \
+            -f docker-compose.integration.environment.yaml \
+            -f docker-compose.integration.tests.yaml \
+            -p dockercourse_tests \
+            up \
+            --build
 
       - name: Push
         run: |
@@ -46,4 +40,4 @@ jobs:
 
       - name: Tear down database
         if: always()
-        run: docker compose down database
+        run: docker compose -p dockercourse_tests down

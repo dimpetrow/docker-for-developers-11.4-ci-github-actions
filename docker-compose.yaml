@@ -22,8 +22,6 @@ services:
     environment:
       - ACCEPT_EULA=true
       - MSSQL_SA_PASSWORD=Dometrain#123
-    # ports:
-    #   - 1433:1433
     # volumes:
     #   -DockerCourseVolume:/:ro
 

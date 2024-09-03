@@ -9,6 +9,8 @@ builder.Services.AddCors();
 
 builder.Services.Configure<Settings>(builder.Configuration);
 
+//builder.Configuration[""]
+
 var app = builder.Build();
 
 app.UseCors(x => x.AllowAnyOrigin());

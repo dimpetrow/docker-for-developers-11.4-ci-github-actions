@@ -1,0 +1,45 @@
+name: dockercourse_integration_tests
+services:
+  database:
+    container_name: database-integration-test
+    environment:
+      ACCEPT_EULA: "true"
+      MSSQL_SA_PASSWORD: Dometrain#123
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 1433
+        published: "1434"
+        protocol: tcp
+  database-seed:
+    build:
+      context: D:\repos\improve\docker-for-developers-11.4-ci-github-actions\Database
+      dockerfile: Dockerfile
+    container_name: database-seed-integration-test
+    depends_on:
+      database:
+        condition: service_started
+        required: true
+    environment:
+      INTEG_TEST: "1"
+    networks:
+      default: null
+  integration-tests:
+    build:
+      context: D:\repos\improve\docker-for-developers-11.4-ci-github-actions\DockerCourseApi
+      dockerfile: DockerCourseApi.Tests/Dockerfile
+    container_name: integration-tests
+    depends_on:
+      database-seed:
+        condition: service_completed_successfully
+        required: true
+    environment:
+      DOCKERCOURSEAPI_DATABASE_INTEGRATION_TEST_DB: database-integration-test,1434
+    image: dometraindockercourse/integration-tests
+    networks:
+      default: null
+networks:
+  default:
+    name: dockercourse_integration_tests_default

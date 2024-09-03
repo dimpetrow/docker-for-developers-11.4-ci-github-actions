@@ -1,0 +1,24 @@
+# Meant to extend 'docker-compose.yaml'
+name: dockercourse_tests
+
+services:
+  database:
+    container_name: ${DATABASE_DNS_ENTRY:-database-integration-test}
+    ports:
+      # use port other than 1433 to avoid clashes. Default to 1434 but env var can override it
+      - ${DATABASE_INTEGRATION_TEST_PORT:-1434}:1433
+    # remove any volumes from parent docker-compose.yaml
+    volumes: []
+
+  database-seed:
+    container_name: database-seed-integration-test
+    environment:
+      - INTEG_TEST=1
+
+  frontend:
+    profiles:
+      - excluded-from-integration-tests
+
+  api:
+    profiles:
+      - excluded-from-integration-tests
