@@ -13,20 +13,22 @@ var app = builder.Build();
 
 app.UseCors(x => x.AllowAnyOrigin());
 
-app.MapGet("/podcasts", async (IOptions<Settings> settings) =>
+app.MapGet("/podcasts", async (IOptions<Settings> settings, ILogger<Program> logger) =>
 {
+    logger.LogInformation(settings.Value.ConnectionString);
     var db = new SqlConnection(settings.Value.ConnectionString);
 
     return (await db.QueryAsync<Podcast>("SELECT * FROM Podcasts")).Select(x => x.Title);
 });
-app.MapGet("/podcastsFull", async (IOptions<Settings> settings) =>
+app.MapGet("/podcastsFull", async (IOptions<Settings> settings, ILogger<Program> logger) =>
 {
+    logger.LogInformation(settings.Value.ConnectionString);
     var db = new SqlConnection(settings.Value.ConnectionString);
 
     return (await db.QueryAsync<Podcast>("SELECT * FROM Podcasts"));
 });
 
-app.Run();
+ app.Run();
 
 public record Podcast(Guid Id, string Title);
 

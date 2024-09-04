@@ -25,11 +25,11 @@ services:
     # ports:
     #   - 1433:1433
     # volumes:
-    #   -DockerCourseVolume:/:ro
+    #   - DockerCourseVolume:/..{mssql_data}
 
   database-seed:
-    depends_on: [database]
     build:
       context: Database/
       dockerfile: Dockerfile
     container_name: database-seed
+    depends_on: [database]
