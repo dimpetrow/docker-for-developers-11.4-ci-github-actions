@@ -28,7 +28,7 @@ app.MapGet("/podcastsFull", async (IOptions<Settings> settings, ILogger<Program>
     return (await db.QueryAsync<Podcast>("SELECT * FROM Podcasts"));
 });
 
- app.Run();
+app.Run();
 
 public record Podcast(Guid Id, string Title);
 

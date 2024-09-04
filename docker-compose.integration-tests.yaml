@@ -1,3 +1,5 @@
+name: course_integration_tests
+
 services:
   integration-tests:
     build:
@@ -6,7 +8,14 @@ services:
     image: dometraindockercourse/integration-tests
     container_name: integration-tests
     environment:
-      - DOCKERCOURSEAPI_ConnectionString='Server=tcp:database;Initial Catalog=podcasts;Persist Security Info=False;User ID=sa;Password=Dometrain#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;'
-    depends_on:
-      database-seed:
-        condition: service_completed_successfully
+      - DOCKERCOURSEAPI_ConnectionString=Server=tcp:database;Initial Catalog=podcasts;Persist Security Info=False;User ID=sa;Password=Dometrain#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;
+    # depends_on:
+    #   database-seed:
+    #     condition: service_completed_successfully
+
+  database:
+    volumes: !reset []
+
+  frontend:
+    profiles:
+      - exclude-from-integration-tests

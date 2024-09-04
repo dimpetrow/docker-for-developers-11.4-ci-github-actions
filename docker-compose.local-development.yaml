@@ -1,0 +1,15 @@
+name: course_local_development
+
+services:
+  database:
+    ports:
+      #use different port to avoid clashes
+      - 1434:1433
+
+  frontend:
+    profiles:
+      - exclude-when-running-locally
+
+  api:
+    profiles:
+      - exclude-when-running-locally
