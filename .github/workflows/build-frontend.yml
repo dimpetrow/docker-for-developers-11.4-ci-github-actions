@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - "master"
+      - "ci-with-compose"
     paths:
       - "DockerCourseFrontend/**"
+      - ".github/workflows/build-frontend.yml"
   workflow_dispatch:
 
 jobs:
